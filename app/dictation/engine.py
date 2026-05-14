@@ -61,9 +61,10 @@ except Exception:
     def _get_foreground_hwnd(): return None
     def _restore_focus(hwnd): pass
 
-# ── Config ────────────────────────────────────────────────────────────────────
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SAMPLE_RATE    = 16000
-TEMP_WAV       = "dictation_temp.wav"
+TEMP_WAV       = os.path.join(BASE_DIR, "dictation_temp.wav")
+HOTKEY         = "ctrl+alt+d"
 from app.database.core import add_session
 
 def get_process_name(hwnd):
@@ -299,5 +300,8 @@ def run_standalone():
 
 
 if __name__ == "__main__":
-    sys.path.insert(0, os.path.abspath("."))
+    # Ensure project root is in sys.path
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    if root_dir not in sys.path:
+        sys.path.insert(0, root_dir)
     run_standalone()
