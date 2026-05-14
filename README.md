@@ -1,48 +1,52 @@
-# M-78 | Premium Desktop Dictation Assistant
+# M-78: Premium Desktop Dictation Assistant
 
-M-78 is a professional, system-wide dictation tool for Windows. It provides high-performance speech-to-text with a premium floating widget and an advanced insights dashboard.
-
-## Features
-- **Global Dictation**: Trigger dictation anywhere with `Ctrl + Alt + D`.
-- **Premium Dashboard**: Track your productivity, word counts, and WPM.
-- **Smart Dictionary**: Save technical terms and names for better recognition.
-- **Snippets**: Quick-inject reusable text phrases.
-- **Privacy First**: All data is stored locally in an encrypted-ready SQLite database.
-
-## 🚀 Quick Start (Windows)
-
-### 1. Clone & Setup
-```bash
-git clone https://github.com/Matis-8/M-78.git
-cd M-78
-```
-
-### 2. Install Python
-Ensure you have **Python 3.9+** installed.
-
-### 3. Install Requirements
-We recommend using a virtual environment:
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### 4. Run M-78
-Simply double-click **`M-78.vbs`** for a silent background launch, or run:
-```bash
-python launcher.py
-```
+> [!IMPORTANT]
+> ### 📥 [DOWNLOAD M-78 SETUP HERE](https://github.com/Matis-8/M-78/releases/latest)
+> **For normal users:** Download and run the **`M-78-Setup.exe`** from the latest release. No Python or complex setup required.
 
 ---
 
-## 🛠️ Portability Note
-M-78 is designed to be fully portable. All paths are relative to the script directory. If you move the folder, the application and its database will follow.
+## 🌟 For Users
+M-78 is a professional, system-wide dictation tool for Windows. It provides high-performance speech-to-text with a premium floating widget and an advanced insights dashboard.
 
-## Project Structure
-- `app/`: Core application logic (Database, Dictation, Widgets, Dashboard).
-- `assets/`: Icons and branded media.
-- `docs/`: Technical documentation and setup guides.
+### 🚀 Getting Started
+1. **Download**: Get the latest `M-78-Setup.exe` from the [Releases](https://github.com/Matis-8/M-78/releases) page.
+2. **Install**: Run the setup file and follow the wizard.
+3. **Launch**: Open M-78 from your Desktop or Start Menu.
+4. **Dictate**: Press `Ctrl + Alt + D` to start dictating into any app!
 
-## License
-Copyright © 2026 M-78 Organization. All rights reserved.
+---
+
+## 🛠️ For Developers
+If you want to build M-78 from source or modify the code, follow these steps.
+
+### 🔨 Build the Installer (.exe)
+We use a 3-step automated build process to generate the professional installer.
+1. **Prerequisites**:
+   - Install **Python 3.9+**.
+   - Install **Inno Setup 6** (from [jrsoftware.org](https://jrsoftware.org/isdl.php)).
+2. **Setup Environment**:
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+3. **Run Build Script**:
+   Double-click `build_installer.bat`.
+   - **Step 1**: Bundles code using PyInstaller.
+   - **Step 2**: Compiles the installer using Inno Setup (`setup.iss`).
+   - **Step 3**: Generates the final **`M-78 Setup.exe`**.
+
+### 📁 Project Structure
+- `app/`: Core logic (Backend, Database, Widgets).
+- `assets/`: Branding and premium icons.
+- `launcher.py`: Main entry point orchestrator.
+- `setup.iss`: Inno Setup configuration script.
+- `build_installer.bat`: Automated build pipeline.
+
+---
+
+## 📜 Professional Release Notes
+See [release_notes.md](docs/release_notes.md) for a full list of features and fixes in v1.0.0.
+
+*Built with ❤️ by the Matis-8 Team.*
