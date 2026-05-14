@@ -22,9 +22,12 @@ if sys.platform == "win32":
         pass
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def resource_path(rel):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
     import sys
-    base = getattr(sys, "_MEIPASS", os.path.abspath("."))
+    base = getattr(sys, "_MEIPASS", BASE_DIR)
     return os.path.join(base, rel)
 
 TEMP_DIR = "temp_audio"
@@ -170,7 +173,7 @@ def update_setting(data: SettingsInput):
                 import win32com.client
                 shell = win32com.client.Dispatch("WScript.Shell")
                 shortcut = shell.CreateShortCut(shortcut_path)
-                current_dir = os.path.abspath(".")
+                current_dir = BASE_DIR
                 shortcut.Targetpath = os.path.join(current_dir, "M-78.vbs")
                 shortcut.WorkingDirectory = current_dir
                 shortcut.IconLocation = os.path.join(current_dir, "assets", "icons", "m78_icon.ico")
@@ -216,7 +219,7 @@ def launch_widget():
                 name = p.info['name']
                 if name and 'python' in name.lower():
                     cmdline = p.info.get('cmdline', [])
-                    if cmdline and any("floating_widget.py" in arg for arg in cmdline):
+                    if cmdline and any("floater.py" in arg for arg in cmdline):
                         if not hwnd:
                             # It is running but has no window. It is likely a ghost process. Terminate it.
                             p.terminate()
@@ -225,8 +228,8 @@ def launch_widget():
                 pass
 
         subprocess.Popen(
-            [sys.executable, os.path.join("app", "widgets", "floater.py")],
-            cwd=os.path.abspath("."),
+            [sys.executable, os.path.join(BASE_DIR, "app", "widgets", "floater.py")],
+            cwd=BASE_DIR,
             creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
         )
         return {"status": "launched"}

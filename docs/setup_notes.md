@@ -1,22 +1,26 @@
 # M-78 Setup & Development Notes
 
-## Environment Setup
-1. Create a virtual environment:
-   ```bash
-   python -m venv .venv
-   source .venv/Scripts/activate
-   ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Prerequisites
+- Windows 10/11
+- Python 3.9 - 3.12 (Recommended)
+- Internet connection (for transcription API)
 
-## Dependencies
-- **FastAPI/Uvicorn**: Backend API and Dashboard server.
-- **PyWebView**: Native Windows window wrapper.
-- **Tkinter**: Lightweight floating widget UI.
-- **SoundDevice/Scipy**: Audio capture.
-- **Pynput**: Global hotkey management.
+## Installation Flow
+1. **Clone the repo** to any local directory.
+2. **Setup environment**:
+   - `python -m venv .venv`
+   - `.venv\Scripts\activate`
+   - `pip install -r requirements.txt`
+3. **Launch**:
+   - Use `M-78.vbs` for a silent launch.
+   - Use `launcher.py` for debugging/console output.
+
+## Project Structure (Modular)
+- `M-78.vbs`: Main silent entry point.
+- `launcher.py`: Orchestrator (Backend + UI).
+- `app/`: Core logic and modules.
+- `assets/`: Branding and icons.
+- `m78_database.sqlite`: Local storage (auto-created).
 
 ## Building the App
 Run the provided `build_m78.bat` to generate a standalone `.exe` using PyInstaller.

@@ -68,8 +68,13 @@ class FloatingWidget:
         self.root.attributes("-alpha", 0.95)   # slight transparency for premium feel
         self.root.config(bg=C_BG)
         self.root.resizable(False, False)
+        
+        # Determine base directory for assets (widget is in app/widgets/)
+        # We want the root M-78 directory
+        self.base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
         try:
-            icon_path = os.path.abspath("assets/icons/m78_icon.ico")
+            icon_path = os.path.join(self.base_dir, "assets", "icons", "m78_icon.ico")
             if os.path.exists(icon_path):
                 self.root.iconbitmap(icon_path)
         except Exception:
@@ -343,9 +348,10 @@ class FloatingWidget:
     def _open_dashboard(self):
         import subprocess
         try:
+            launcher_path = os.path.join(self.base_dir, "launcher.py")
             subprocess.Popen(
-                [sys.executable, "launcher.py", "--dashboard-only"],
-                cwd=os.path.abspath("."),
+                [sys.executable, launcher_path, "--dashboard-only"],
+                cwd=self.base_dir,
             )
         except Exception as ex:
             print(f"[M-78] Dashboard open failed: {ex}")
@@ -364,5 +370,8 @@ class FloatingWidget:
 
 
 if __name__ == "__main__":
-    sys.path.insert(0, os.path.abspath("."))
+    # Ensure project root is in sys.path
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    if root_dir not in sys.path:
+        sys.path.insert(0, root_dir)
     FloatingWidget().run()

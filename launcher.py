@@ -27,8 +27,11 @@ if sys.platform == "win32":
 BACKEND_URL = "http://127.0.0.1:8000"
 
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def resource_path(rel):
-    base = getattr(sys, "_MEIPASS", os.path.abspath("."))
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    base = getattr(sys, "_MEIPASS", BASE_DIR)
     return os.path.join(base, rel)
 
 
@@ -40,7 +43,7 @@ def start_backend():
         [python, script],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        cwd=os.path.abspath("."),
+        cwd=BASE_DIR,
         creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
     )
     return proc
@@ -62,7 +65,8 @@ def wait_for_backend(timeout=30):
 # ── Floating widget ───────────────────────────────────────────
 def run_widget():
     """Run the floating widget in the current thread (blocking)."""
-    sys.path.insert(0, os.path.abspath("."))
+    if BASE_DIR not in sys.path:
+        sys.path.insert(0, BASE_DIR)
     from app.widgets.floater import FloatingWidget
     FloatingWidget().run()
 
@@ -78,7 +82,7 @@ def set_window_icon():
         import win32con
         hwnd = win32gui.FindWindow(None, "M-78")
         if hwnd:
-            icon_path = os.path.abspath("assets/icons/m78_icon.ico")
+            icon_path = resource_path("assets/icons/m78_icon.ico")
             if os.path.exists(icon_path):
                 # Load small and big icons
                 hicon = win32gui.LoadImage(
@@ -108,8 +112,31 @@ def run_dashboard():
     webview.start()
 
 
+def check_dependencies():
+    """Quick check for critical dependencies to show friendly error message."""
+    missing = []
+    deps = ["fastapi", "webview", "requests", "keyboard", "psutil"]
+    if sys.platform == "win32":
+        deps.append("win32gui")
+    
+    for dep in deps:
+        try:
+            __import__(dep.split('.')[0])
+        except ImportError:
+            missing.append(dep)
+    
+    if missing:
+        print(f"\n[M-78] ERROR: Missing required dependencies: {', '.join(missing)}")
+        print("[M-78] Please run: pip install -r requirements.txt\n")
+        # On Windows, keep window open if not running from terminal
+        if sys.platform == "win32" and sys.stdout.isatty():
+             input("Press Enter to exit...")
+        sys.exit(1)
+
 # ── Full app ──────────────────────────────────────────────────
 def main():
+    check_dependencies()
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("--widget-only",    action="store_true")
     parser.add_argument("--dashboard-only", action="store_true")
@@ -141,7 +168,7 @@ def main():
     launch_widget_startup = True
     try:
         import sqlite3
-        db_path = os.path.abspath("m78_database.sqlite")
+        db_path = resource_path("m78_database.sqlite")
         if os.path.exists(db_path):
             conn = sqlite3.connect(db_path)
             c = conn.cursor()

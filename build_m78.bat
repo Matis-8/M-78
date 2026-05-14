@@ -11,13 +11,15 @@ cd /d "%~dp0"
 :: --name: Official application name
 
 .venv\Scripts\python -m PyInstaller --noconsole ^
-    --icon="m78_icon.ico" ^
+    --icon="assets/icons/m78_icon.ico" ^
     --name="M-78" ^
-    --add-data "frontend;frontend" ^
-    --add-data "m78_icon.ico;." ^
+    --add-data "app/dashboard;app/dashboard" ^
+    --add-data "assets/icons/m78_icon.ico;assets/icons" ^
     --hidden-import="pywebview" ^
     --hidden-import="fastapi" ^
     --hidden-import="uvicorn" ^
+    --hidden-import="psutil" ^
+    --hidden-import="keyboard" ^
     launcher.py
 
 echo [M-78] Build complete. Check the 'dist' folder.

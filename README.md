@@ -9,10 +9,35 @@ M-78 is a professional, system-wide dictation tool for Windows. It provides high
 - **Snippets**: Quick-inject reusable text phrases.
 - **Privacy First**: All data is stored locally in an encrypted-ready SQLite database.
 
-## Getting Started
-1. **Prerequisites**: Ensure you have Python 3.10+ installed.
-2. **Launch**: Use the `M-78.vbs` silent launcher or run `python launcher.py`.
-3. **Setup**: Follow the instructions in `docs/setup_notes.md` for dependencies.
+## 🚀 Quick Start (Windows)
+
+### 1. Clone & Setup
+```bash
+git clone https://github.com/Matis-8/M-78.git
+cd M-78
+```
+
+### 2. Install Python
+Ensure you have **Python 3.9+** installed.
+
+### 3. Install Requirements
+We recommend using a virtual environment:
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 4. Run M-78
+Simply double-click **`M-78.vbs`** for a silent background launch, or run:
+```bash
+python launcher.py
+```
+
+---
+
+## 🛠️ Portability Note
+M-78 is designed to be fully portable. All paths are relative to the script directory. If you move the folder, the application and its database will follow.
 
 ## Project Structure
 - `app/`: Core application logic (Database, Dictation, Widgets, Dashboard).
