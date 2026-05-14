@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M-78 | Dictation Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=3" />
+</head>
+<body>
+
+<!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h5l3-8 4 16 3-8h3"/></svg>
+    </div>
+    <div class="brand-name">M-78</div>
+    <div class="brand-badge">Premium</div>
+  </div>
+
+  <nav class="nav-section" id="sidebarNav">
+    <a href="#" class="nav-item" data-page="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Home
+    </a>
+    <a href="#" class="nav-item active" data-page="insights">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      Insights
+    </a>
+    <a href="#" class="nav-item" data-page="dictionary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Dictionary
+    </a>
+    <a href="#" class="nav-item" data-page="snippets">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 3L3 21m18 0L3 3"/></svg>
+      Snippets
+    </a>
+    <a href="#" class="nav-item" data-page="scratchpad">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Scratchpad
+    </a>
+    <a href="#" class="nav-item" data-page="meeting">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Meeting Recorder
+    </a>
+  </nav>
+
+  <nav class="nav-section sidebar-footer">
+    <a href="#" class="nav-item" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a>
+  </nav>
+</aside>
+
+<!-- ── Main Content ────────────────────────────────────────────────── -->
+<main class="main-content">
+
+  <section id="page-home" class="page">
+    <div class="page-header">
+      <div class="header-title-area">
+        <h1 id="homeGreeting">Good morning, there</h1>
+        <p style="color: var(--text-2);">Quick overview of your recent dictations.</p>
+      </div>
+      <!-- Launch Widget Button -->
+      <button id="btnLaunchWidget" class="btn-launch" style="position:static;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+        Launch Dictation Widget
+      </button>
+    </div>
+    <div class="card" style="min-height: 400px; padding: 24px;">
+      <h2>Recent Dictations</h2>
+      <div class="sessions-list" id="homeSessionsList" style="margin-top: 24px; display: flex; flex-direction: column; gap:16px;">
+        <!-- Filled via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Default Insights Page -->
+  <section id="page-insights" class="page active">
+    <div class="page-header">
+      <div class="header-title-area">
+        <h1>Insights</h1>
+        <div class="nav-tabs">
+          <div class="tab active" data-tab="usage">Your Usage</div>
+          <div class="tab" data-tab="voice">Your Voice</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-share">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid-top">
+      <div class="card wpm-card">
+        <div class="card-value" id="statsWPM">0</div>
+        <div class="card-title">WORDS PER MINUTE</div>
+        <div class="arc-container">
+          <div class="arc-bg"></div>
+          <div class="arc-fill"></div>
+          <div class="arc-label">
+            <span class="sm">Avg</span>
+            <span class="lg">Speed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-value" id="statsTotalSessionsVal">0</div>
+        <div class="card-title">TOTAL SESSIONS</div>
+        <div class="fixes-list" style="margin-top: 12px; font-size: 14px; display: flex; flex-direction: column; gap: 8px;">
+          <div class="fix-item"><strong id="statsWeeklySessions">0</strong> weekly sessions<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
+          <div class="fix-item"><strong id="statsTodaySessions">0</strong> daily sessions<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
+        </div>
+      </div>
+
+      <div class="card total-card">
+        <div class="card-value" id="totalWordsVal">...</div>
+        <div class="card-title">TOTAL WORDS DICTATED</div>
+        <div class="pill-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <span id="todayWordsVal">0</span> today
+        </div>
+        <div class="sub-text-lg">You've written <span id="booksWritten">...</span> complete books!</div>
+        <div class="bar-stacked">
+          <div class="bar-chunk" style="width: 100%;">Desktop 100%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-bottom" id="tabContentUsage">
+      <div class="card">
+        <div class="card-header-flex">
+          <h2>App Usage Tracking</h2>
+          <span id="totalAppsUsed">TOTAL APPS USED | ...</span>
+        </div>
+        <div class="usage-list" id="desktopUsageList">
+          <!-- Filled via JS -->
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="heatmap-header">
+          <div class="card-header-flex" style="margin-bottom:0">
+            <h2 id="streakHeaderTitle">... day streak</h2>
+          </div>
+          <span id="longestStreakLabel" style="font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-2);">LONGEST STREAK | ... DAYS</span>
+        </div>
+        <div class="heatmap-nav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg>
+          <span style="display:flex; justify-content:space-between; width: 100%; padding:0 30px;">
+            <span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="heatmap-grid-wrap">
+          <div class="h-days">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <div class="h-cells-container" id="heatmapContainer"></div>
+        </div>
+        <div class="h-footer">
+          <div class="h-legend">
+            More 
+            <div class="h-legend-cell" style="background:#155e59"></div>
+            <div class="h-legend-cell" style="background:#34d399"></div>
+            <div class="h-legend-cell" style="background:#6ee7b7"></div>
+            <div class="h-legend-cell" style="background:#d1fae5"></div>
+            <div class="h-legend-cell" style="background:#f3f4f6"></div>
+            Less
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Your Voice Content -->
+    <div class="grid-bottom" id="tabContentVoice" style="display: none;">
+      <div class="card" style="grid-column: span 2;">
+        <div class="card-header-flex">
+          <h2>Most Frequent Dictation Phrases</h2>
+        </div>
+        <div class="usage-list" id="voiceInsightsList" style="margin-top:12px;">
+          <!-- Filled via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dictionary -->
+  <section id="page-dictionary" class="page">
+    <div class="page-header">
+      <div class="header-title-area">
+        <h1>Dictionary</h1>
+        <p style="color: var(--text-2); max-width: 600px; line-height: 1.5; margin-top: 8px;">Dictionary helps you save names, technical terms, custom vocabulary, and difficult words so M-78 can better recognize and remember them during dictation.</p>
+      </div>
+      <button class="btn-launch" style="position:static" id="btnAddDict">+ Add Word</button>
+    </div>
+    <div class="card list-view" id="dictList">...</div>
+  </section>
+
+  <!-- Snippets -->
+  <section id="page-snippets" class="page">
+    <div class="page-header">
+      <div class="header-title-area">
+        <h1>Snippets</h1>
+        <p style="color: var(--text-2); max-width: 600px; line-height: 1.5; margin-top: 8px;">Snippets help you save reusable phrases such as email replies, meeting responses, introductions, and repeated text so you can quickly reuse them later.</p>
+      </div>
+      <button class="btn-launch" style="position:static" id="btnAddSnippet">+ Add Phrase</button>
+    </div>
+    <div class="card list-view" id="snippetList">...</div>
+  </section>
+
+  <!-- Scratchpad -->
+  <section id="page-scratchpad" class="page">
+    <div class="page-header">
+      <div class="header-title-area">
+        <h1>Scratchpad</h1>
+        <p style="color: var(--text-2); max-width: 600px; line-height: 1.5; margin-top: 8px;">Auto-saving quick notes.</p>
+      </div>
+    </div>
+    <textarea id="scratchpadArea" class="card" style="width:100%; min-height:500px; resize:none; font-family:Inter; font-size:16px; border-color:var(--border-strong);"></textarea>
+  </section>
+
+  <!-- Settings -->
+  <section id="page-settings" class="page">
+    <div class="page-header">
+      <div class="header-title-area">
+        <h1>Settings</h1>
+      </div>
+    </div>
+    <div class="card" style="padding: 24px; max-width: 600px;">
+      
+      <div style="margin-bottom: 24px;">
+        <h3 style="margin-bottom: 8px; font-weight: 600;">PROFILE SETTINGS</h3>
+        <label style="display:block; font-size: 14px; color: var(--text-2); margin-bottom:4px;">Display Name</label>
+        <input type="text" id="settingDisplayName" placeholder="e.g. Kelly" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-strong); font-family: Inter; outline: none;" />
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <h3 style="margin-bottom: 8px; font-weight: 600;">PREFERENCES</h3>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+          <span style="font-size: 14px; font-weight: 500;">Launch widget on startup</span>
+          <label class="switch">
+            <input type="checkbox" id="settingLaunchStartup">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+          <span style="font-size: 14px; font-weight: 500;">Start M-78 minimized</span>
+          <label class="switch">
+            <input type="checkbox" id="settingStartMin">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+          <span style="font-size: 14px; font-weight: 500;">Start with Windows</span>
+          <label class="switch">
+            <input type="checkbox" id="settingWindowsStartup">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+           <div>
+             <span style="font-size: 14px; font-weight: 500; display: block;">Default dictation hotkey</span>
+             <span style="font-size: 12px; color: var(--text-2);">Standard override (Requires restart)</span>
+           </div>
+           <input type="text" value="Ctrl+Alt+D" readonly style="padding: 8px; background: var(--bg-hover); border: 1px solid var(--border); border-radius: 4px; font-family: Inter; text-align: center; color: var(--text-2); width: 100px;"/>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <h3 style="margin-bottom: 8px; font-weight: 600;">PRIVACY</h3>
+        <div style="font-size: 13px; color: var(--text-2); line-height: 1.5; padding: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; color: #166534;">
+          <strong>Local Only Mode Active</strong><br>
+          Your audio, transcripts, and history never leave this system. All data storage is completely constrained to your device via local DB mapping.
+        </div>
+      </div>
+
+      <div>
+        <h3 style="margin-bottom: 8px; font-weight: 600;">RESET OPTIONS</h3>
+        <div style="display:flex; gap: 12px;">
+          <button id="btnClearHistory" style="padding: 8px 16px; border-radius: 6px; border: 1px solid #fca5a5; background: #fef2f2; color: #b91c1c; font-weight: 500; cursor: pointer;">Clear history</button>
+          <button id="btnResetAnalytics" style="padding: 8px 16px; border-radius: 6px; border: 1px solid #fca5a5; background: #fef2f2; color: #b91c1c; font-weight: 500; cursor: pointer;">Reset analytics</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 32px; text-align: right;">
+        <button id="btnSaveSettings" style="background: var(--accent); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: 600; cursor: pointer;">Save Settings</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Stubs -->
+  <section id="page-meeting" class="page"><div class="page-header"><h1>Meeting Recorder (Future Feature)</h1></div></section>
+
+</main>
+
+<script src="app.js?v=4"></script>
+</body>
+</html>

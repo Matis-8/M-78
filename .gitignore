@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Database
+*.sqlite
+sessions.json
+temp_audio/
+
+# Local/Internal Documentation
+/brain/
+logo_gen.py
+launcher_old.py
+main_old.py
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log

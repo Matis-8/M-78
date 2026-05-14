@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+faster-whisper
+soundfile
+requests
+python-multipart
+keyboard
+pyautogui
+pyperclip
+sounddevice
+scipy
+numpy
+pywebview
+psutil
