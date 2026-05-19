@@ -1,7 +1,7 @@
 # M-78: Premium Desktop Dictation Assistant
 
 > [!IMPORTANT]
-> ### DOWNLOAD M-78 SETUP HERE
+> ### [DOWNLOAD M-78 SETUP HERE](https://github.com/Matis-8/M-78/releases/latest)
 > **For normal users:** Download and run the **`M-78-Setup.exe`** from the latest release. No Python or complex setup required.
 
 ---
