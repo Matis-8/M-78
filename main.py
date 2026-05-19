@@ -79,14 +79,12 @@ async def handle_transcription(file: UploadFile = File(...)):
         with open(file_path, "wb") as buf:
             shutil.copyfileobj(file.file, buf)
 
+        # In unified mode, the widget handles its own session recording to capture duration and app name accurately.
+        # The backend just provides the raw transcription service.
         raw_text = transcribe(file_path)
         os.remove(file_path)
 
-        # /transcribe endpoint used via HTTP tracks as "API / Remote" 
         word_count = len(raw_text.split()) if raw_text else 0
-        if raw_text:
-            database.add_session(raw_text, word_count, "API / Remote")
-
         return {"raw_text": raw_text, "word_count": word_count}
 
     except Exception as e:
@@ -232,8 +230,9 @@ def launch_widget():
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.TimeoutExpired):
                 pass
 
+        args = ["--widget"] if getattr(sys, 'frozen', False) else [os.path.join(BASE_DIR, "app", "widgets", "floater.py")]
         subprocess.Popen(
-            [sys.executable, os.path.join(BASE_DIR, "app", "widgets", "floater.py")],
+            [sys.executable] + args,
             cwd=BASE_DIR,
             creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
         )

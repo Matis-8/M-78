@@ -1,5 +1,6 @@
 import os
 from faster_whisper import WhisperModel
+from app.utils.logger import log, log_error
 
 # Model config — "base" is fastest with good accuracy
 # Change to "small" for better quality on powerful machines
@@ -10,15 +11,36 @@ _model = None
 def get_model():
     global _model
     if _model is None:
-        print(f"[M-78] Loading Whisper model: {MODEL_SIZE}...")
+        # 1. Determine base path (MEIPASS for bundle, CWD for dev)
+        import sys
+        base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        
+        # 2. Check for VAD assets
+        vad_path = os.path.join(base, "faster_whisper", "assets", "silero_vad_v6.onnx")
+        if os.path.exists(vad_path):
+            log(f"VAD model asset verified at: {vad_path}", role="Backend")
+        else:
+            log_error(f"VAD model asset MISSING at: {vad_path}", role="Backend")
+
+        # 3. Determine Model Path (Bundle first, then dev local, then cache)
+        local_model_path = os.path.join(base, "assets", "models", f"whisper-{MODEL_SIZE}")
+        
+        if os.path.exists(local_model_path):
+            log(f"Loading local bundled model from: {local_model_path}", role="Backend")
+            model_to_load = local_model_path
+        else:
+            log(f"Local model not found. Falling back to default loader for {MODEL_SIZE}...", role="Backend")
+            model_to_load = MODEL_SIZE
+
+        log(f"Initializing Whisper model...", role="Backend")
         _model = WhisperModel(
-            MODEL_SIZE,
+            model_to_load,
             device="cpu",
             compute_type="int8",
             num_workers=2,           # parallel decode workers
             cpu_threads=4,           # use more CPU threads
         )
-        print("[M-78] Model ready.")
+        log("[M-78] Model ready.", role="Backend")
     return _model
 
 

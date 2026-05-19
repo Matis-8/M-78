@@ -13,6 +13,8 @@ if exist build rmdir /s /q build
 .venv\Scripts\python -m PyInstaller --noconsole ^
     --icon="assets/icons/m78_icon.ico" ^
     --name="M-78" ^
+    --add-data ".venv\Lib\site-packages\faster_whisper\assets;faster_whisper/assets" ^
+    --add-data "assets/models/whisper-base;assets/models/whisper-base" ^
     --add-data "app/dashboard;app/dashboard" ^
     --add-data "assets/icons/m78_icon.ico;assets/icons" ^
     --hidden-import="webview" ^
@@ -20,6 +22,8 @@ if exist build rmdir /s /q build
     --hidden-import="uvicorn" ^
     --hidden-import="psutil" ^
     --hidden-import="keyboard" ^
+    --hidden-import="win32gui" ^
+    --hidden-import="win32con" ^
     launcher.py
 
 if %ERRORLEVEL% NEQ 0 (
@@ -30,10 +34,12 @@ if %ERRORLEVEL% NEQ 0 (
 
 :: STEP 2: Compile .iss using Inno Setup
 echo [STEP 2/3] Compiling Setup Script (ISCC)...
+
 set "ISCC=iscc.exe"
-where !ISCC! >nul 2>nul
+where "%ISCC%" >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
-    set "ISCC=C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+    set "ISCC=C:\Users\Administrator\AppData\Local\Programs\Inno Setup 6\ISCC.exe"
+    if not exist "!ISCC!" set "ISCC=C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
     if not exist "!ISCC!" set "ISCC=C:\Program Files\Inno Setup 6\ISCC.exe"
 )
 

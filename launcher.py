@@ -16,6 +16,11 @@ import threading
 import argparse
 import requests
 import ctypes
+import multiprocessing
+from app.utils.logger import log, log_error
+
+if __name__ == "__main__":
+    multiprocessing.freeze_support()
 
 if sys.platform == "win32":
     myappid = 'M78.Dictation.App' # Professional ID
@@ -37,15 +42,17 @@ def resource_path(rel):
 
 # ── Backend process ───────────────────────────────────────────
 def start_backend():
+    log("Starting backend process...")
     python = sys.executable
-    script = resource_path("main.py")
+    args = ["--backend"] if getattr(sys, 'frozen', False) else [resource_path("main.py")]
     proc = subprocess.Popen(
-        [python, script],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        [python] + args,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
         cwd=BASE_DIR,
         creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
     )
+    log("Backend process started.")
     return proc
 
 
@@ -64,11 +71,19 @@ def wait_for_backend(timeout=30):
 
 # ── Floating widget ───────────────────────────────────────────
 def run_widget():
-    """Run the floating widget in the current thread (blocking)."""
-    if BASE_DIR not in sys.path:
-        sys.path.insert(0, BASE_DIR)
-    from app.widgets.floater import FloatingWidget
-    FloatingWidget().run()
+    """Run the floating widget."""
+    if getattr(sys, 'frozen', False):
+        # In bundled mode, start a separate process so it's truly isolated
+        subprocess.Popen(
+            [sys.executable, "--widget"],
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
+        )
+    else:
+        # In dev mode, we can just import and run (usually in a thread)
+        if BASE_DIR not in sys.path:
+            sys.path.insert(0, BASE_DIR)
+        from app.widgets.floater import FloatingWidget
+        FloatingWidget().run()
 
 
 # ── Dashboard (pywebview) ─────────────────────────────────────
@@ -126,11 +141,23 @@ def check_dependencies():
             missing.append(dep)
     
     if missing:
-        print(f"\n[M-78] ERROR: Missing required dependencies: {', '.join(missing)}")
-        print("[M-78] Please run: pip install -r requirements.txt\n")
-        # On Windows, keep window open if not running from terminal
-        if sys.platform == "win32" and sys.stdout.isatty():
-             input("Press Enter to exit...")
+        msg = f"Missing required dependencies: {', '.join(missing)}\n\nPlease reinstall M-78 or run: pip install -r requirements.txt"
+        print(f"\n[M-78] ERROR: {msg}\n")
+        
+        # On Windows, try to show a GUI message box if we're in GUI mode
+        if sys.platform == "win32":
+            try:
+                import ctypes
+                ctypes.windll.user32.MessageBoxW(0, msg, "M-78 Launch Error", 0x10)
+            except Exception:
+                pass
+        
+        # Only try to wait for input if we have a valid stdin/stdout TTY
+        if sys.platform == "win32" and sys.stdout and sys.stdout.isatty() and sys.stdin:
+            try:
+                input("Press Enter to exit...")
+            except EOFError:
+                pass
         sys.exit(1)
 
 # ── Full app ──────────────────────────────────────────────────
@@ -140,10 +167,23 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--widget-only",    action="store_true")
     parser.add_argument("--dashboard-only", action="store_true")
+    parser.add_argument("--backend",        action="store_true")
+    parser.add_argument("--widget",         action="store_true")
     args = parser.parse_args()
 
-    if args.widget_only:
-        run_widget()
+    if args.backend:
+        import uvicorn
+        # Import main at runtime to avoid circular/premature initialization
+        from main import app
+        uvicorn.run(app, host="127.0.0.1", port=8000, log_level="warning")
+        return
+
+    if args.widget or args.widget_only:
+        # If we reached here with --widget or --widget-only, it's the role of THIS process
+        if BASE_DIR not in sys.path:
+            sys.path.insert(0, BASE_DIR)
+        from app.widgets.floater import FloatingWidget
+        FloatingWidget().run()
         return
 
     # Start backend

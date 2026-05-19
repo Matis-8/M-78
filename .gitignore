@@ -29,3 +29,9 @@ desktop.ini
 
 # Logs
 *.log
+
+# AI Models
+assets/models/
+
+# Installers
+dist-installer/

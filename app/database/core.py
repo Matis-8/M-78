@@ -2,7 +2,9 @@ import sqlite3
 import datetime
 import os
 
-DB_PATH = "m78_database.sqlite"
+DB_DIR = os.path.join(os.path.expanduser("~"), ".m78")
+DB_PATH = os.path.join(DB_DIR, "m78_database.sqlite")
+os.makedirs(DB_DIR, exist_ok=True)
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)

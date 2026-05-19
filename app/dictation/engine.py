@@ -18,6 +18,8 @@ from scipy.io.wavfile import write as wav_write
 import keyboard
 import pyperclip
 import pyautogui
+import requests
+from app.utils.logger import log, log_error
 
 from app.backend.transcriber import transcribe
 
@@ -142,6 +144,7 @@ class DictationBackend:
         self._chunks      = []
         self._start_time  = time.time()
         self._emit("recording")
+        log("Recording started.", role="Widget")
 
         def _cb(indata, frames, t, status):
             if self.is_recording:
@@ -175,19 +178,37 @@ class DictationBackend:
         wav_write(TEMP_WAV, SAMPLE_RATE, audio)
 
         self._emit("processing")
+        log(f"Recording stopped. Duration: {duration:.2f}s. Saved to {TEMP_WAV}", role="Widget")
         return TEMP_WAV, duration
 
     # ── Process & Inject ──────────────────────────────────────────────────────
     def process_and_type(self, wav_file: str, duration_s: float):
         try:
-            raw = transcribe(wav_file)
+            # Try API first to save local resources and ensure only one model is loaded (in backend)
+            raw = ""
+            try:
+                log("Attempting transcription via API...", role="Widget")
+                with open(wav_file, "rb") as f:
+                    # The backend expects 'file' parameter
+                    files = {"file": ("audio.wav", f, "audio/wav")}
+                    resp = requests.post("http://127.0.0.1:8000/transcribe", files=files, timeout=30)
+                
+                if resp.status_code == 200:
+                    raw = resp.json().get("raw_text", "")
+                    log("Transcription successful via API.", role="Widget")
+                else:
+                    log_error(f"API transcription failed (status {resp.status_code}). Falling back to local.", role="Widget")
+                    raw = transcribe(wav_file)
+            except Exception as api_ex:
+                log_error(f"API transcription request failed: {api_ex}. Falling back to local.", role="Widget")
+                raw = transcribe(wav_file)
 
             if not raw or not raw.strip():
-                print("[M-78] No speech detected.")
+                log("No speech detected.", role="Widget")
                 self._emit("idle")
                 return ""
 
-            print(f"[M-78] Transcribed: {raw}")
+            log(f"Transcription result: {raw[:50]}...", role="Widget")
             word_count = len(raw.split())
 
             self._inject_text(raw)

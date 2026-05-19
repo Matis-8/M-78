@@ -3,8 +3,8 @@
 Before publishing the release to GitHub, ensure all boxes are checked:
 
 ## 📦 Installer & Files
-- [ ] `build_installer.bat` runs successfully.
-- [ ] `M-78-Setup.exe` is generated in `dist-installer/`.
+- [x] `build_installer.bat` runs successfully.
+- [x] `M-78-Setup.exe` is generated in `dist-installer/`.
 - [ ] Installer icon is correctly displayed.
 - [ ] Installer license/terms (optional) are included if needed.
 

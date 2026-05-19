@@ -348,9 +348,9 @@ class FloatingWidget:
     def _open_dashboard(self):
         import subprocess
         try:
-            launcher_path = os.path.join(self.base_dir, "launcher.py")
+            args = ["--dashboard-only"] if getattr(sys, 'frozen', False) else [os.path.join(self.base_dir, "launcher.py"), "--dashboard-only"]
             subprocess.Popen(
-                [sys.executable, launcher_path, "--dashboard-only"],
+                [sys.executable] + args,
                 cwd=self.base_dir,
             )
         except Exception as ex:

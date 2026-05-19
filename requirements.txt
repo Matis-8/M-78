@@ -12,3 +12,4 @@ scipy
 numpy
 pywebview
 psutil
+pywin32
